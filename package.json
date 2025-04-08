@@ -1,0 +1,26 @@
+{
+  "name": "smart-contract-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@uniswap/sdk": "^3.0.3",
+    "axios": "^1.7.9",
+    "card": "^2.5.4",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2",
+    "lucide-react": "^0.485.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "react": "^19.0.0",
+    "sharp": "^0.33.5",
+    "telegraf": "^4.16.3",
+    "web3": "^4.16.0"
+  }
+}
