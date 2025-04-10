@@ -22,6 +22,8 @@ const RPC_URL = process.env.RPC_URL;
 
 console.log(`RPC URL IS ${RPC_URL}`);
 
+const PURCHASE_THRESHOLD = 100000; // 100,000 tokens
+
 // Configuración del bot de Telegram
 const bot = new TelegramBot(process.env.TG_TOKEN, { polling: true });
 const chatId = process.env.TG_CHAT_ID; 
@@ -65,7 +67,8 @@ async function main() {
           sendLog("⚠️Balance de Bunny bajo, agregar más lo antes posible.");
         }
 
-        if (amount0Out >= 100000n) {
+        if (Number(formatEther(`${amount0Out}`)) >= PURCHASE_THRESHOLD) {
+
           const tokensReceived = amount0Out; // CashBunny recibido
           const formattedTokenReceived = formatUnits(tokensReceived, 18); // 18 decimales estándar
 
@@ -112,7 +115,9 @@ async function main() {
           } catch (error) {
             sendLog(`❌ Error en la operación: ${error.message}`);
           }
-      };
+        } else {
+          sendLog("❌ Compra menor al umbral de 100,000 CashBunny.");
+        }
     }
     
     contract.on("Swap",  handleSwap);
