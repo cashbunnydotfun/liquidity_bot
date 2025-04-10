@@ -2,15 +2,16 @@
 import { config } from 'dotenv';
 // Use the URL constructor with import.meta.url for an absolute path to your .env file.
 config({ path: new URL('./.env', import.meta.url).pathname });
+console.log("Working directory:", process.cwd());
+
 import { ethers, formatEther, parseEther, JsonRpcProvider } from "ethers";
 import { formatUnits } from 'ethers';
-console.log("Working directory:", process.cwd());
 
 import TelegramBot from 'node-telegram-bot-api';
 import { readFileSync } from 'fs';
 
-import bunnyAbi from './bunnyAbi.json' assert { type: 'json' };
-import pairAbi from './pairAbi.json' assert { type: 'json' };
+import bunnyAbi from './artifacts/bunnyAbi.json' assert { type: 'json' };
+import pairAbi from './artifacts/pairAbi.json' assert { type: 'json' };
  
 const PANCAKE_SWAP_PAIR = "0xa60874e8557902Ef3039C1b623b55E6E210110dd"; // Dirección del par de liquidez en PancakeSwap
 const CASHBUNNY_ADDRESS = "0x2F7c6FCE82a4845726C3744df21Dc87788112B66"; // Dirección del token CashBunny
@@ -30,7 +31,6 @@ function sendLog(message) {
   console.log(message); // Conserva el log limpio en consola
   bot.sendMessage(chatId, formattedMessage).catch(err => console.error("Error enviando mensaje a Telegram:", err));
 }
-
 
 async function main() {
     const provider = new JsonRpcProvider(RPC_URL);
@@ -87,7 +87,7 @@ async function main() {
               await txSell.wait();
 
             } else {
-              sendLog("❌ Error: Gas estimado es 0.");
+              sendLog("❌ (handleSellAmount) Error: Gas estimado es 0.");
             }
 
             const formattedTax = formatEther(`${tax}`); 
@@ -103,10 +103,10 @@ async function main() {
 
               await txLiquidity.wait();
               sendLog("💧 Liquidez agregada correctamente.");
-
+            } else {
+              sendLog("❌ (addLiquidity) Error: Gas estimado es 0.");
             }
 
-            
             sendLog("🤖 Bunny_bot Activo de nuevo...");
 
           } catch (error) {
